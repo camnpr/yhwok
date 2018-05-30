@@ -25,3 +25,7 @@ package.json
   "server": "yhwok server"
 }
 ```
+
+### Test
+
+`webpack --config  ./config/webpack.config.dev.js`

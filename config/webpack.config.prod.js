@@ -24,14 +24,19 @@ module.exports = {
     publicPath: publicPath,
   },
   resolve: {
-    extensions: ['.js', '.json', '.jsx', '.ts', 'tsx', ''],
+    extensions: ['.js', '.json', '.jsx', '.ts', 'tsx'],
   },
   resolveLoader: {
-    root: paths.ownNodeModules,
-    moduleTemplates: ['*-loader'],
+    // root: paths.ownNodeModules,
+    // moduleTemplates: ['*-loader'],
+    modules: [
+      paths.appNodeModulesOwn, // 优先使用自定义的module来提供loader
+      'node_modules'
+    ],
+    moduleExtensions: ["-loader"]
   },
   module: {
-    loaders: [
+    rules: [
       {
         exclude: [
           /\.html$/,
@@ -111,7 +116,7 @@ module.exports = {
     // 根据模块调用次数，给模块分配ids，常被调用的ids分配更短的id，使得ids可预测，降低文件大小，该模块推荐使用
     new webpack.optimize.OccurrenceOrderPlugin(),
     // 打包的时候删除重复或者相似的文件
-    new webpack.optimize.DedupePlugin(),
+    // new webpack.optimize.DedupePlugin(), // DedupePlugin: This plugin was removed from webpack. Remove it from your configuration.
     // https://segmentfault.com/a/1190000008995453 配置说明
     new webpack.optimize.UglifyJsPlugin({
       // 压缩

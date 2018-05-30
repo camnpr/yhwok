@@ -1,5 +1,6 @@
 'use strict'
 
+const path = require('path');
 const autoprefixer = require('autoprefixer');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const webpack = require('webpack');
@@ -33,19 +34,25 @@ module.exports = {
   // 影响模块的解决方案
   resolve: {
     // 一个包含模块扩展名的数组。例如，为了发现CoffeeScript 文件，你的数组应该包含字符串".coffee"。
-    // 默认是：["", ".webpack.js", ".web.js", ".js"]，如果设置，表示覆盖了默认的，意味着webpack不再用默认扩展名查找模块
-    extensions: ['.js', '.json', '.jsx', '.ts', 'tsx', ''], // 如果你想正确加载一个带有扩展名的模块，你必须把一个空字符串放在你的数组里。
+    // webpack 1.x默认是：["", ".webpack.js", ".web.js", ".js"]，如果设置，表示覆盖了默认的，意味着webpack不再用默认扩展名查找模块
+    // webpack 1.x如果你想正确加载一个带有扩展名的模块，你必须把一个空字符串放在你的数组里。
+    extensions: ['.js', '.json', '.jsx', '.ts', 'tsx'], // webpack 3.x 不能有空字符串
   },
   // 和resolve很像，只是，这个针对：loader
   resolveLoader: {
     // root: 定义，包含你的模块的目录（绝对路径）
-    root: paths.appNodeModulesOwn, // 自定义node模块，优先。
-    moduleTemplates: ['*-loader'], // 描述了尝试的模块名称的替代名
+    // root: paths.appNodeModulesOwn, // 自定义node模块，优先。
+    // moduleTemplates: ['*-loader'], // 描述了尝试的模块名称的替代名  webpack 1.x 有效。
+    modules: [
+      paths.appNodeModulesOwn, // 优先使用自定义的module来提供loader解析
+      'node_modules'
+    ],
+    moduleExtensions: ["-loader"]
   },
   // 模块的配置
   module: {
     // 一个自动运行的loader数组，每一个数组项，都可以有：test,exclude,include,loader,loaders,等条件项
-    loaders: [
+    rules: [
       {
         // 一个排查的条件
         exclude: [
@@ -73,6 +80,7 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: /node_modules/,
+        // 多个loader用!分隔，从右往左执行
         loader: 'style!css?importLoaders=1&modules&localIdentName=[local]___[hash:base64:5]!postcss',
       },
       {
