@@ -14,7 +14,7 @@ const webpack = require('webpack');
 // 是一个中间件，可以写到app.use(...)，针对SPA页面，可以重写URL（解决刷新404问题）等。
 const historyApiFallback = require('connect-history-api-fallback');
 // node代理的中间件，usage: app.use('/api', proxy({target: 'http://www.example.org', changeOrigin: true}));
-const httpProxyMiddleware = require('http-proxy-middleware');
+// const httpProxyMiddleware = require('http-proxy-middleware');
 const WebpackDevServer = require('webpack-dev-server');
 // 粉笔，终端字符串样式，usage: chalk.red('red color');
 const chalk = require('chalk');
@@ -40,17 +40,19 @@ function setupCompiler(host, port, protocol) {
   });
 
   let isFirstCompile = true;
+  
   compiler.plugin('done', function(stats) {
     if (isInteractive) {
       clearConsole();
     }
 
-    const messages = formatWebpackMessages(stats.toJSON({}, true));
+    // 从stats中提取美化警告和错误信息。
+    const messages = formatWebpackMessages(stats.toJson({}, true));
     const isSucessful = !messages.errors.length && !messages.warnings.length;
     const showInstructions = isSucessful && (isInteractive || isFirstCompile);
 
     if (isSucessful) {
-      console.log(chalk.green('Compiled successfully! yhw'));
+      console.log(chalk.green('Compiled successfully! yhwok'));
     }
 
     if (showInstructions) {

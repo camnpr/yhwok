@@ -13,17 +13,19 @@ const appPaths = require('../config/paths');
 const pkgJSON = require(appPaths.appPackageJson);
 
 
-console.log(__dirname, process.cwd(), fs.realpathSync(process.cwd()));
-console.log(chalk.gray(`script:${script}.`));
-console.log();
-console.log(chalk.gray(`args:${args}`));
-console.log();
-console.log(appPaths);
-console.log(path.resolve('public/index.html'));
-console.log(chalk.red('------------------------------------------------------------------'))
-
 switch(script) {
+  case 'help':
+    console.log(chalk.yellow('--help view'));
+    break;
   case 'version':
+    console.log(__dirname, process.cwd(), fs.realpathSync(process.cwd()));
+    console.log(chalk.gray(`script:${script}.`));
+    console.log();
+    console.log(chalk.gray(`args:${args}`));
+    console.log();
+    console.log(appPaths);
+    console.log(path.resolve('public/index.html'));
+    console.log(chalk.red('------------------------------------------------------------------'))
     console.log(chalk.cyan(pkgJSON.version));
     break;
   case 'build':
@@ -31,6 +33,15 @@ switch(script) {
     const result = spawn.sync(
       'node',
       [require.resolve(`../scripts/${script}`)].concat(args),
+      { stdio: 'inherit' }
+    );
+    console.log(chalk.yellow(result, result.status));
+    process.exit(result.status);
+    break;
+  case 'weex':   // e.g : yhwok weex create   // args：create
+    const result = spawn.sync(
+      'weex',
+      [].concat(args),
       { stdio: 'inherit' }
     );
     console.log(chalk.yellow(result, result.status));

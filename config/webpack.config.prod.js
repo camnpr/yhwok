@@ -1,9 +1,9 @@
 'use strict'
 
 const autoprefixer = require('autoprefixer');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+// const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const webpack = require('webpack');
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+// const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 // 从中提取文本到单独的文件中。common
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const paths = require('./paths');

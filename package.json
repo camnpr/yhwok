@@ -1,7 +1,7 @@
 {
   "name": "yhwok",
-  "version": "0.0.6",
-  "description": "yhwok cli test",
+  "version": "0.0.7",
+  "description": "yhwok CLI tool",
   "bin": {
     "yhwok": "./bin/yhwok.js"
   },
