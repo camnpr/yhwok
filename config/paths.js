@@ -3,6 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 
+// process.cwd() 是当前Node.js进程执行时的工作目录
 const appDirectory = fs.realpathSync(process.cwd());
 
 function resolveApp(relativePath) {
@@ -10,7 +11,7 @@ function resolveApp(relativePath) {
 }
 
 function resolveOwn(relativePath) {
-  // __dirname  是当前文件执行的目录：E:\\npm\\yhwok\\config\
+  // __dirname  是当前模块的目录名
   return path.resolve(__dirname, relativePath);
 }
 
@@ -22,4 +23,5 @@ module.exports = {
   appSrc: resolveApp('src'), // 源码目录，待构建
   appNodeModules: resolveApp('node_modules'), // 通用的node modules
   appNodeModulesOwn: resolveOwn('../node_modules'), // 私有的node modules
+  appPackageJsonOwn: resolveOwn('../package.json'),
 };

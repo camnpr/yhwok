@@ -24,9 +24,12 @@ install with yarn:
 package.json
 
 "scripts": {
-  "version": "yhwok version",
-  "build": "yhwok build",
-  "server": "yhwok server"
+  "help": "yhwok [help|-h|-help]", // to be perfected...
+  "version": "yhwok [version|-v|-version]", // add version update check
+  "init": "yhwok init", // create project files
+  "build": "yhwok build", 
+  "server": "yhwok server", // TODO: mock data is miss
+  "weex": "yhwok weex [args]" // args: weex official any params
 }
 ```
 
