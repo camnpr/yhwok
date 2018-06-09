@@ -6,33 +6,33 @@
 
 ### yhwok
 
-yhwok is a simple develop cli. [简体中文](readme-CN.md)
+yhwok是一个前端构建和工程化工具。 [English](readme.md)
 
-### Install
+### 安装
 
-install with npm:
+使用npm方式:（中国大陆用户可以使用 cnpm 加速安装）
 
 `npm i yhwok --save-dev`
 
-install with yarn:
+使用yarn方式:
 
 `yarn add yhwok --dev`
 
-### Usage
+### 使用
 
 ``` bash
-// package.json
+// 在自己的项目根目录下的 package.json 添加脚本来运行。
 
 "scripts": {
-  "help": "yhwok [help|-h]", // to be perfected...
-  "version": "yhwok [version|-v]", // add version update check
-  "init": "yhwok init [project name]", // create project files; TODO: support simple, weex, Wechat, vue, react...
-  "build": "yhwok build", 
-  "server": "yhwok server" // TODO: mock data, vconsole
+  "help": "yhwok [help|-h]", // 一些帮助信息
+  "version": "yhwok [version|-v]", // 查看版本，提示版本更新
+  "init": "yhwok init [project name]", // 初始化一个项目的文件（hybrid/vue/weex/react/...）
+  "build": "yhwok build",  // 构建打包，
+  "server": "yhwok server", // TODO: mock data is miss
 }
 ```
 
-### Test
+### 测试
 
 ``` bash
 webpack --config  ./config/webpack.config.dev.js

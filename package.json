@@ -1,6 +1,6 @@
 {
   "name": "yhwok",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "yhwok CLI tool",
   "bin": {
     "yhwok": "./bin/yhwok.js"
@@ -38,7 +38,7 @@
     "file-loader": "^0.9.0",
     "fs": "^0.0.1-security",
     "http-proxy-middleware": "^0.17.3",
-    "inquirer": "^5.2.0",
+    "inquirer": "^6.0.0",
     "json-loader": "^0.5.4",
     "lodash.escaperegexp": "^4.1.2",
     "map-stream": "0.0.7",
