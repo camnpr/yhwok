@@ -24,4 +24,6 @@ module.exports = {
   appNodeModules: resolveApp('node_modules'), // 通用的node modules
   appNodeModulesOwn: resolveOwn('../node_modules'), // 私有的node modules
   appPackageJsonOwn: resolveOwn('../package.json'),
+  resolveApp,
+  resolveOwn,
 };

@@ -13,6 +13,15 @@ const pkg = require('../package.json');
 const appPaths = require('../config/paths');
 const init = require('../config/init');
 
+const nodeVersions = process.versions.node.split('.');
+const major = nodeVersions[0];
+const minor = nodeVersions[1];
+
+if (major * 10 + minor * 1 < 65) {
+  console.log(`Node version must >= 6.5, current is ${major}.${minor}`);
+  process.exit(1);
+}
+
 // view usage guide
 if (process.argv.length <= 2) {
   console.log(chalk.green(`
@@ -30,7 +39,7 @@ if (process.argv.length <= 2) {
 }
 
 // check `yhwok` update version
-updateNotifier({pkg}).notify();
+updateNotifier({ pkg: pkg }).notify({ defer: true });
 
 switch(script) {
   case '-h':
@@ -58,7 +67,7 @@ switch(script) {
     init.pick();
     break;
   case 'build':
-  case 'server':
+  case 'dev':
 
     console.log("https://res.wx.qq.com/mmbizwap/zh_CN/htmledition/js/vconsole/3.0.0/vconsole.min.js");
     console.log("mobile debug use 'vconsole'");
@@ -69,7 +78,7 @@ switch(script) {
       [require.resolve(`../scripts/${script}`)].concat(args),
       { stdio: 'inherit' }
     );
-    console.log(chalk.yellow(JSON.stringify(result), result.status));
+    console.log(chalk.yellow( result.status));
     process.exit(result.status);
     break;
   case '-w':

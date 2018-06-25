@@ -4,6 +4,7 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const paths = require('./paths');
 
@@ -78,6 +79,11 @@ module.exports = {
         loader: 'babel',
       },
       {
+        test: /\.vue$/,
+        include: paths.appSrc,
+        loader: 'vue',
+      },
+      {
         test: /\.css$/,
         exclude: /node_modules/,
         // 多个loader用!分隔，从右往左执行
@@ -124,12 +130,17 @@ module.exports = {
       }
     }),
     // 通过配置了DefinePlugin，那么这里面的标识就相当于全局变量，你的业务代码可以直接使用配置的标识。
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': process.env.NODE_ENV,
-      },
-    }),
-    new webpack.HotModuleReplacementPlugin(), // 启动热加载，相当于： hot: true
+    // new webpack.DefinePlugin({
+    //   'process.env': {
+    //     'NODE_ENV': process.env.NODE_ENV,
+    //   },
+    // }),
+    new HtmlWebpackPlugin({
+      filename: 'test.html',
+      template: 'public/index.html'
+    }), // 生成默认的index.html
+    new webpack.BannerPlugin('// yhwok CLI is running \n'),// 添加标头信息。
+    // new webpack.HotModuleReplacementPlugin(), // 启动热加载，相当于： hot: true
     new CaseSensitivePathsPlugin(), // 兼容路径大小写 OSX WIN
     new WatchMissingNodeModulesPlugin(paths.appNodeModules), // 校验node modules
   ],

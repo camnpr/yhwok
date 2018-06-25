@@ -15,13 +15,15 @@ const webpack = require('webpack');
 const historyApiFallback = require('connect-history-api-fallback');
 // node代理的中间件，usage: app.use('/api', proxy({target: 'http://www.example.org', changeOrigin: true}));
 // const httpProxyMiddleware = require('http-proxy-middleware');
+// const expressHttpProxy = require('express-http-proxy');
 const WebpackDevServer = require('webpack-dev-server');
 // 粉笔，终端字符串样式，usage: chalk.red('red color');
 const chalk = require('chalk');
 const config = require('../config/webpack.config.dev');
 const paths = require('../config/paths')
+const applyMock = require('../config/mock');
 
-process.env.NODE_ENV = 'development';
+// process.env.NODE_ENV = JSON.stringify('development');
 
 const DEFAULT_PORT = process.env.PORT || 3000;
 // stdout:标注输出流。   isTTY 来判断当前是否处于TTY上下文
@@ -31,17 +33,17 @@ let compiler;
 function setupCompiler(host, port, protocol) {
   compiler = webpack(config);
 
-  compiler.plugin('invalid', function() {
+  compiler.plugin('invalid', function () {
     // 是否在交互
-    if(isInteractive) {
+    if (isInteractive) {
       clearConsole();
     }
     console.log('Compiling...')
   });
 
   let isFirstCompile = true;
-  
-  compiler.plugin('done', function(stats) {
+
+  compiler.plugin('done', function (stats) {
     if (isInteractive) {
       clearConsole();
     }
@@ -52,7 +54,7 @@ function setupCompiler(host, port, protocol) {
     const showInstructions = isSucessful && (isInteractive || isFirstCompile);
 
     if (isSucessful) {
-      console.log(chalk.green('Compiled successfully! yhwok'));
+      console.log(chalk.green('Compiled successfully!'));
     }
 
     if (showInstructions) {
@@ -62,7 +64,7 @@ function setupCompiler(host, port, protocol) {
       console.log('  ' + chalk.cyan(protocol + '://' + host + ':' + port + '/'));
       console.log();
       console.log('Note that the development build is not optimized.');
-      console.log(`To create a production build, use ${chalk.cyan('npm run build')}.`);
+      console.log(`To create a production build, use ${chalk.cyan('yhwok build')}.`);
       console.log();
       isFirstCompile = false;
     }
@@ -95,20 +97,23 @@ function setupCompiler(host, port, protocol) {
   });
 }
 
+//------------------------------------------------------------------------------
+
 function addMiddleware(devServer) {
-  const proxy = require(paths.appPackageJson).proxy;
-  devServer.use(historyApiFallback({
-    disableDotRule: true,
-    htmlAcceptHeaders: proxy ?
-      ['text/html'] :
-      ['text/html', '*/*']
-  }));
-  // TODO: proxy index.html,...
-  devServer.use(devServer.middleware);
+  // const proxy = require(paths.appPackageJson).proxy;
+  // devServer.use(historyApiFallback({
+  //   disableDotRule: true,
+  //   htmlAcceptHeaders: proxy ?
+  //     ['text/html'] :
+  //     ['text/html', '*/*']
+  // }));
+  // // TODO: proxy index.html,...
+  // devServer.use(devServer.middleware);
+
+  applyMock(devServer.app);
 }
 
 function runDevServer(host, port, protocol) {
-  console.log('runDevServer...a...');
   const devServer = new WebpackDevServer(compiler, {
     compress: true,
     clientLogLevel: 'none',
@@ -123,9 +128,7 @@ function runDevServer(host, port, protocol) {
     host: host
   });
 
-  console.log('runDevServer...b...');
   addMiddleware(devServer);
-  console.log('runDevServer...c...');
 
   devServer.listen(port, (err) => {
     if (err) {
@@ -142,7 +145,6 @@ function runDevServer(host, port, protocol) {
       openBrowser(protocol + '://' + host + ':' + port + '/');
     }
   });
-  console.log('runDevServer...d...');
 }
 
 function run(port) {
@@ -152,9 +154,8 @@ function run(port) {
   runDevServer(host, port, protocol);
 }
 
-console.log('x', DEFAULT_PORT);
+// 检查接口是否占用
 detect(DEFAULT_PORT).then((port) => {
-  console.log('xx', port, DEFAULT_PORT);
   if (port === DEFAULT_PORT) {
     run(port);
     return;
@@ -163,7 +164,7 @@ detect(DEFAULT_PORT).then((port) => {
   if (isInteractive) {
     clearConsole();
     const existingProcess = getProcessForPort(DEFAULT_PORT);
-    const question = 
+    const question =
       chalk.yellow('Something is already running on port ' + DEFAULT_PORT + '.'
         + ((existingProcess ? 'Probably:\n  ' + existingProcess : ''))
         + '\n\nWould you like to run the app on another port instead?'
@@ -177,4 +178,4 @@ detect(DEFAULT_PORT).then((port) => {
   } else {
     console.log(chalk.red(`Something is already running on port ${DEFAULT_PORT}`));
   }
-})
+});

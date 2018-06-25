@@ -28,8 +28,21 @@ install with yarn:
   "version": "yhwok [version|-v]", // add version update check
   "init": "yhwok init [project name]", // create project files; TODO: support simple, weex, Wechat, vue, react...
   "build": "yhwok build", 
-  "server": "yhwok server" // TODO: mock data, vconsole
+  "dev": "yhwok dev" // TODO: vconsole
 }
+```
+
+### mock data
+
+```
+{ '/hello': [Function: /hello],
+  '/list': [Function: /list],
+  '/user': { name: 'test', age: 20 },
+  '/api/*': 'http://www.example.com',
+  '/ok': [Function: /ok],
+  '/new': [Function: /new],
+  '/old1': { name: 'test', age: 101 } }
+[HPM] Proxy created: /  ->  http://www.example.com
 ```
 
 ### Test

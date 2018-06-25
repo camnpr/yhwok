@@ -28,8 +28,21 @@ yhwok是一个前端构建和工程化工具。 [English](readme.md)
   "version": "yhwok [version|-v]", // 查看版本，提示版本更新
   "init": "yhwok init [project name]", // 初始化一个项目的文件（hybrid/vue/weex/react/...）
   "build": "yhwok build",  // 构建打包，
-  "server": "yhwok server", // TODO: mock data is miss
+  "dev": "yhwok dev", // TODO: vconsole
 }
+```
+
+### mock data
+
+```
+{ '/hello': [Function: /hello],
+  '/list': [Function: /list],
+  '/user': { name: 'test', age: 20 },
+  '/api/*': 'http://www.example.com',
+  '/ok': [Function: /ok],
+  '/new': [Function: /new],
+  '/old1': { name: 'test', age: 101 } }
+[HPM] Proxy created: /  ->  http://www.example.com
 ```
 
 ### 测试

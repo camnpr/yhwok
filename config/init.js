@@ -5,10 +5,11 @@
 
 const chalk = require('chalk');
 const exists = require('fs').existsSync;
-const rm = require('rimraf').sync;
 const download = require('download-git-repo');
-const ora = require('ora');
-const inquirer = require('inquirer');
+const ora = require('ora'); // 命令行动画
+const inquirer = require('inquirer'); // 问答 prompt
+const shell = require('shelljs');
+const path = require('./paths');
 
 function downloadTemplate(template) {
   // Temporary use:
@@ -17,7 +18,7 @@ function downloadTemplate(template) {
   const spinner = ora(`Downloading template from ${template} repo`);
   spinner.start();
   // Remove if local template exists
-  if (exists(target)) rm(target);
+  if (exists(target)) shell.rm('-rf', target);
   // 本地 gitlab 有权限问题，待测，目前用github仓库
   download(template, target, function (err) {
     spinner.stop();
@@ -59,7 +60,8 @@ exports.pick = async function (opts) {
   
   switch(answer.selected) {
     case 'Simple':
-      downloadTemplate("benjycui/bisheng");
+      // downloadTemplate("benjycui/bisheng");
+      shell.cp('-R',  path.resolveOwn('../template/*'), path.resolveApp('./'));
       break;
     case 'Weex':
       downloadTemplate("camnpr/yhwok-weex");
