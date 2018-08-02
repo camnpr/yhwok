@@ -5,17 +5,45 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>index</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <!--Web APP Manifest-->
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Chrome Add to Homescreen -->
+  <link rel="shortcut icon" href="/pwa/img/46.png" sizes="46x46">
+
+  <link rel="apple-touch-icon" href="/pwa/img/46.png" sizes="46x46">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <mate name="theme-color" content="#000000">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="WPA demo">
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <meta name="msapplication-TileImage" content="/pwa/img/46.png">
+  <meta name="msapplication-TileColor" content="#3372DF">
+  
   <script>
     window.__webpack_public_path__ = '/static/xxxxxxxxxx/';
   </script>
 </head>
 <body>
-
+  <img src="/assets/userhead.png" />
   <h1>Hi yhwok</h1>
   <div id="root"></div>
 
   <script src="./index.js"></script>
-
+  <script>
+    (function() {
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/yhwok-service-worker.js');
+      }
+    })();
+  </script>
 </body>
 </html>

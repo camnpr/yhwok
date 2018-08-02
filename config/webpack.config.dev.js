@@ -6,6 +6,9 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+
+const SWPrecachePlugin = require('sw-precache-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const paths = require('./paths');
 
 const publicPath = '/';
@@ -112,6 +115,41 @@ module.exports = {
     ]
   },
   plugins: [
+    // 用到production环境（webpack-merge...)
+    // .pwarc.js文件里的 manifest 节点
+    new ManifestPlugin({
+      // writeToFileEmit: true, // 
+      seed: {
+        name: 'YHWOK Demo',
+        short_name: 'YHWOK',
+        description: 'this is a simple manifest intro',
+        version_name: 'beta',
+        icons: [
+            {
+                "src": "/pwa/img/46.png",
+                "sizes": "46X46",
+                "type": "image/png"
+            }
+        ],
+        background_color: "#fff",
+        theme_color: "#000",
+        start_url: "/",
+        display: "standalone",
+        orientation: "portrait"
+      }
+    }),
+    new SWPrecachePlugin({
+      cacheId: 'yhwok-sw-precache-wepack-plugin', // service worker cache的唯一名字， 非必须，默认：sw-precache-wepack-plugin
+      filename: 'yhwok-service-worker.js', // 
+      minify: true, // 压缩 service-worker.js
+      staticFileGlobs: [
+        'public/assets/**.*',
+        'public/*.html',
+        '/favicon.ico'
+      ],
+      navigateFallback: publicPath + 'index.html',
+      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+    }),
     new webpack.LoaderOptionsPlugin({
       options: {
         // https://github.com/postcss/postcss/blob/master/README-cn.md
@@ -139,7 +177,14 @@ module.exports = {
       filename: 'test.html',
       template: 'public/index.html'
     }), // 生成默认的index.html
-    new webpack.BannerPlugin('// yhwok CLI is running \n'),// 添加标头信息。
+    new webpack.BannerPlugin(
+      '// yhwok CLI is running \n'
+      + '(function() {'
+      + ' if("serviceWorker" in navigator) {'
+      + '  navigator.serviceWorker.register("/yhwok-service-worker.js");'
+      + ' }'
+      + '})();'
+    ),// 添加标头信息。
     // new webpack.HotModuleReplacementPlugin(), // 启动热加载，相当于： hot: true
     new CaseSensitivePathsPlugin(), // 兼容路径大小写 OSX WIN
     new WatchMissingNodeModulesPlugin(paths.appNodeModules), // 校验node modules

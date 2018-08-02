@@ -49,6 +49,7 @@ exports.pick = async function (opts) {
     message: opts.message || "Found 2 templates (Use arrow keys)",
     choices: opts.choices || [
       "Simple", 
+      "Motion",
       new inquirer.Separator(), 
       "Weex",
       "Wechat",
@@ -61,7 +62,25 @@ exports.pick = async function (opts) {
   switch(answer.selected) {
     case 'Simple':
       // downloadTemplate("benjycui/bisheng");
+      let deleteTips = await inquirer.prompt({
+        name: "SimpleRF",
+        type: "text",
+        message: "begin DELETE current folder of All Files, are you OK? [Y/N]",
+      });
+      if (deleteTips.SimpleRF == "Y") {
+        shell.rm('-rf', path.resolveApp('./'));
+      } else {
+        console.log(chalk.gray('current is append thing!'));
+      }
       shell.cp('-R',  path.resolveOwn('../template/*'), path.resolveApp('./'));
+      shell.cp('-R',  path.resolveOwn('../template/.editorconfig'), path.resolveApp('./'));
+      shell.cp('-R',  path.resolveOwn('../template/.yhwokrc.mock.js'), path.resolveApp('./'));
+      shell.cp('-R',  path.resolveOwn('../template/.webpackrc.js'), path.resolveApp('./'));
+      shell.cp('-R',  path.resolveOwn('../template/.pwarc.js'), path.resolveApp('./'));
+      shell.cp('-R',  path.resolveOwn('../template/package.json'), path.resolveApp('./'));
+      break;
+    case 'Motion':
+      downloadTemplate("camnpr/yhwok-web");
       break;
     case 'Weex':
       downloadTemplate("camnpr/yhwok-weex");

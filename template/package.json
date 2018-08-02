@@ -1,0 +1,23 @@
+{
+  "name": "simple",
+  "version": "1.0.0",
+  "description": "a simple test package",
+  "main": "index.js",
+  "scripts": {
+    "version": "yhwok version",
+    "dev": "yhwok dev --env.NODE_ENV=production",
+    "build": "yhwok build --env.NODE_ENV=production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "npm",
+    "test",
+    "package"
+  ],
+  "dependencies": {
+    "gome-bridge-core": "^1.0.55",
+    "yhwok": "^0.0.5"
+  },
+  "author": "isudaji",
+  "license": "MIT"
+}
